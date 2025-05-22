@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Digital</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: radial-gradient(ellipse at center, #0f0f23 0%, #000000 100%);
+      color: #ffffff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Partículas de fondo */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(2px 2px at 20px 30px, #00ffff, transparent),
+        radial-gradient(2px 2px at 40px 70px, #ff00ff, transparent),
+        radial-gradient(1px 1px at 90px 40px, #00ff00, transparent),
+        radial-gradient(1px 1px at 130px 80px, #ffff00, transparent),
+        radial-gradient(2px 2px at 160px 30px, #ff0080, transparent);
+      background-repeat: repeat;
+      background-size: 200px 150px;
+      animation: sparkle 4s linear infinite;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-10px) translateX(5px); }
+    }
+
+    /* Header futurista */
+    header {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+      animation: rotate 6s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    header h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00, #ffff00);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .subtitle {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Contenedor principal */
+    .menu-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      gap: 2rem;
+    }
+
+    /* Secciones del menú */
+    .section {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .section:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.8s;
+    }
+
+    .section:hover::before {
+      left: 100%;
+    }
+
+    /* Títulos de sección */
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: currentColor;
+      border-radius: 2px;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .section-title.asados { color: #ff6b9d; }
+    .section-title.pizzas { color: #feca57; }
+    .section-title.aperitivos { color: #48dbfb; }
+
+    /* Layout responsive */
+    @media (min-width: 768px) {
+      .section {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 2rem;
+        align-items: start;
+      }
+    }
+
+    /* Contenido de la sección */
+    .section-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Items del menú */
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:hover {
+      padding-left: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border-bottom-color: transparent;
+    }
+
+    .menu-item-name {
+      font-size: 1.1rem;
+      font-weight: 400;
+      transition: color 0.3s ease;
+    }
+
+    .menu-item:hover .menu-item-name {
+      color: #00ffff;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .menu-item-price {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #00ff88;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+      padding: 0.3rem 0.8rem;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item:hover .menu-item-price {
+      background: rgba(0, 255, 136, 0.2);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    }
+
+    /* Imágenes */
+    .section-image {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      height: 250px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+      background: linear-gradient(45deg, #1a1a2e, #16213e);
+    }
+
+    .section-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.4s ease;
+      filter: brightness(0.8) saturate(1.2);
+    }
+
+    .section-image:hover {
+      transform: scale(1.05);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .section-image:hover img {
+      transform: scale(1.1);
+      filter: brightness(1) saturate(1.4);
+    }
+
+    .section-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .section-image:hover::before {
+      opacity: 1;
+    }
+
+    /* Overlay con efecto futurista */
+    .section-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .section-image:hover::after {
+      opacity: 1;
+    }
+
+    /* Efectos de hover globales */
+    .section:nth-child(1):hover { box-shadow: 0 20px 40px rgba(255, 107, 157, 0.2); }
+    .section:nth-child(2):hover { box-shadow: 0 20px 40px rgba(254, 202, 87, 0.2); }
+    .section:nth-child(3):hover { box-shadow: 0 20px 40px rgba(72, 219, 251, 0.2); }
+
+    /* Animaciones de entrada */
+    .section {
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .section:nth-child(1) { animation-delay: 0.2s; }
+    .section:nth-child(2) { animation-delay: 0.4s; }
+    .section:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+      .menu-container {
+        padding: 1rem;
+      }
+      
+      .section {
+        padding: 1.5rem;
+      }
+      
+      .section-image {
+        height: 200px;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CHIFA HUGUCKS</h1>
+    <div class="subtitle">Experiencia Gastronómica</div>
+  </header>
+
+  <div class="menu-container">
+    <section class="section">
+      <div class="section-content">
+        <div class="section-title asados">Asados y Parrilladas</div>
+        <div class="menu-item">
+          <span class="menu-item-name">Bife de Chorizo Premium</span>
+          <span class="menu-item-price">$450.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Costillas BBQ Ahumadas</span>
+          <span class="menu-item-price">$380.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Parrillada Completa</span>
+          <span class="menu-item-price">$650.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Cordero Patagónico</span>
+          <span class="menu-item-price">$520.00</span>
+        </div>
+      </div>
+      <div class="section-image">
+        <img src="https://res.cloudinary.com/dfwansnah/image/upload/v1747951213/asados-parrillas_q1mj11.jpg" alt="Asados y Parrilladas">
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-content">
+        <div class="section-title pizzas">Pizzas Artesanales</div>
+        <div class="menu-item">
+          <span class="menu-item-name">Pizza Quattro Formaggi</span>
+          <span class="menu-item-price">$320.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Margherita Premium</span>
+          <span class="menu-item-price">$280.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Pepperoni Suprema</span>
+          <span class="menu-item-price">$350.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Veggie Deluxe</span>
+          <span class="menu-item-price">$310.00</span>
+        </div>
+      </div>
+      <div class="section-image">
+        <img src="https://res.cloudinary.com/dfwansnah/image/upload/v1747951212/pizzas_wbi5cc.jpg" alt="Pizzas Artesanales">
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-content">
+        <div class="section-title aperitivos">Aperitivos Gourmet</div>
+        <div class="menu-item">
+          <span class="menu-item-name">Tabla de Quesos Selectos</span>
+          <span class="menu-item-price">$240.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Croquetas de Jamón Ibérico</span>
+          <span class="menu-item-price">$180.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Bruschetta Mediterránea</span>
+          <span class="menu-item-price">$160.00</span>
+        </div>
+        <div class="menu-item">
+          <span class="menu-item-name">Alitas Buffalo Picantes</span>
+          <span class="menu-item-price">$220.00</span>
+        </div>
+      </div>
+      <div class="section-image">
+        <img src="https://res.cloudinary.com/dfwansnah/image/upload/v1747951212/aperitivos_yarxyr.jpg" alt="Aperitivos Gourmet">
+      </div>
+    </section>
+  </div>
+</body>
+</html>
