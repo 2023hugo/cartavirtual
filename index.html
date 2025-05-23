@@ -1,428 +1,373 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú Digital</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Exo 2', sans-serif;
-      background: radial-gradient(ellipse at center, #0f0f23 0%, #000000 100%);
-      color: #ffffff;
-      overflow-x: hidden;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    /* Partículas de fondo */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(2px 2px at 20px 30px, #00ffff, transparent),
-        radial-gradient(2px 2px at 40px 70px, #ff00ff, transparent),
-        radial-gradient(1px 1px at 90px 40px, #00ff00, transparent),
-        radial-gradient(1px 1px at 130px 80px, #ffff00, transparent),
-        radial-gradient(2px 2px at 160px 30px, #ff0080, transparent);
-      background-repeat: repeat;
-      background-size: 200px 150px;
-      animation: sparkle 4s linear infinite;
-      z-index: -1;
-      opacity: 0.3;
-    }
-
-    @keyframes sparkle {
-      0%, 100% { transform: translateY(0px) translateX(0px); }
-      50% { transform: translateY(-10px) translateX(5px); }
-    }
-
-    /* Header futurista */
-    header {
-      text-align: center;
-      padding: 3rem 2rem;
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-      animation: rotate 6s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    header h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 900;
-      background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00, #ffff00);
-      background-size: 400% 400%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradient-shift 3s ease-in-out infinite;
-      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-      letter-spacing: 3px;
-      margin-bottom: 0.5rem;
-    }
-
-    @keyframes gradient-shift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .subtitle {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* Contenedor principal */
-    .menu-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-      display: grid;
-      gap: 2rem;
-    }
-
-    /* Secciones del menú */
-    .section {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    .section:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      transition: left 0.8s;
-    }
-
-    .section:hover::before {
-      left: 100%;
-    }
-
-    /* Títulos de sección */
-    .section-title {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      position: relative;
-      padding-bottom: 1rem;
-    }
-
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 60px;
-      height: 3px;
-      background: currentColor;
-      border-radius: 2px;
-      box-shadow: 0 0 10px currentColor;
-    }
-
-    .section-title.asados { color: #ff6b9d; }
-    .section-title.pizzas { color: #feca57; }
-    .section-title.aperitivos { color: #48dbfb; }
-
-    /* Layout responsive */
-    @media (min-width: 768px) {
-      .section {
-        display: grid;
-        grid-template-columns: 1fr 300px;
-        gap: 2rem;
-        align-items: start;
-      }
-    }
-
-    /* Contenido de la sección */
-    .section-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Items del menú */
-    .menu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .menu-item:last-child {
-      border-bottom: none;
-    }
-
-    .menu-item:hover {
-      padding-left: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      border-bottom-color: transparent;
-    }
-
-    .menu-item-name {
-      font-size: 1.1rem;
-      font-weight: 400;
-      transition: color 0.3s ease;
-    }
-
-    .menu-item:hover .menu-item-name {
-      color: #00ffff;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    }
-
-    .menu-item-price {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #00ff88;
-      text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-      padding: 0.3rem 0.8rem;
-      background: rgba(0, 255, 136, 0.1);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      border-radius: 15px;
-      transition: all 0.3s ease;
-    }
-
-    .menu-item:hover .menu-item-price {
-      background: rgba(0, 255, 136, 0.2);
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-    }
-
-    /* Imágenes */
-    .section-image {
-      position: relative;
-      border-radius: 15px;
-      overflow: hidden;
-      height: 250px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.4s ease;
-      background: linear-gradient(45deg, #1a1a2e, #16213e);
-    }
-
-    .section-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: all 0.4s ease;
-      filter: brightness(0.8) saturate(1.2);
-    }
-
-    .section-image:hover {
-      transform: scale(1.05);
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-    }
-
-    .section-image:hover img {
-      transform: scale(1.1);
-      filter: brightness(1) saturate(1.4);
-    }
-
-    .section-image::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1;
-    }
-
-    .section-image:hover::before {
-      opacity: 1;
-    }
-
-    /* Overlay con efecto futurista */
-    .section-image::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1;
-    }
-
-    .section-image:hover::after {
-      opacity: 1;
-    }
-
-    /* Efectos de hover globales */
-    .section:nth-child(1):hover { box-shadow: 0 20px 40px rgba(255, 107, 157, 0.2); }
-    .section:nth-child(2):hover { box-shadow: 0 20px 40px rgba(254, 202, 87, 0.2); }
-    .section:nth-child(3):hover { box-shadow: 0 20px 40px rgba(72, 219, 251, 0.2); }
-
-    /* Animaciones de entrada */
-    .section {
-      opacity: 0;
-      transform: translateY(50px);
-      animation: fadeInUp 0.8s ease forwards;
-    }
-
-    .section:nth-child(1) { animation-delay: 0.2s; }
-    .section:nth-child(2) { animation-delay: 0.4s; }
-    .section:nth-child(3) { animation-delay: 0.6s; }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Responsive */
-    @media (max-width: 767px) {
-      .menu-container {
-        padding: 1rem;
-      }
-      
-      .section {
-        padding: 1.5rem;
-      }
-      
-      .section-image {
-        height: 200px;
-        margin-top: 1rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chifa Hugucks - Carta Virtual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>CHIFA HUGUCKS</h1>
-    <div class="subtitle">Experiencia Gastronómica</div>
-  </header>
+    <header class="header">
+        <div class="header-content">
+            <h1>CHIFA HUGUCKS</h1>
+            <p class="subtitle">Sabores Auténticos de la Campiña</p>
+        </div>
+        <nav class="category-nav">
+            <button class="nav-btn active" data-category="parrillas">
+                <i class="fas fa-fire"></i> Parrillas
+            </button>
+            <button class="nav-btn" data-category="truchas">
+                <i class="fas fa-fish"></i> Truchas
+            </button>
+            <button class="nav-btn" data-category="especialidades">
+                <i class="fas fa-utensils"></i> Especialidades
+            </button>
+            <button class="nav-btn" data-category="tipicos">
+                <i class="fas fa-leaf"></i> Típicos
+            </button>
+            <button class="nav-btn" data-category="bebidas">
+                <i class="fas fa-glass-cheers"></i> Bebidas
+            </button>
+            <button class="nav-btn" data-category="postres">
+                <i class="fas fa-ice-cream"></i> Postres
+            </button>
+        </nav>
+    </header>
 
-  <div class="menu-container">
-    <section class="section">
-      <div class="section-content">
-        <div class="section-title asados">Asados y Parrilladas</div>
-        <div class="menu-item">
-          <span class="menu-item-name">Bife de Chorizo Premium</span>
-          <span class="menu-item-price">$450.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Costillas BBQ Ahumadas</span>
-          <span class="menu-item-price">$380.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Parrillada Completa</span>
-          <span class="menu-item-price">$650.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Cordero Patagónico</span>
-          <span class="menu-item-price">$520.00</span>
-        </div>
-      </div>
-      <div class="section-image">
-        <img src="https://res.cloudinary.com/dfwansnah/image/upload/v1747951213/asados-parrillas_q1mj11.jpg" alt="Asados y Parrilladas">
-      </div>
-    </section>
+    <main class="menu-container">
+        <!-- SECCIÓN PARRILLAS -->
+        <section class="category-section active" id="parrillas">
+            <h2 class="section-title">🥩 Parrillas Campestres</h2>
+            <div class="menu-grid">
+                <article class="menu-item" style="animation-delay: 0.1s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&h=300&fit=crop" alt="Parrillada Completa" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Parrillada Completa</h3>
+                        <p class="item-description">Mezcla de carnes premium, chorizos artesanales y vegetales asados, servida con chimichurri casero</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 85.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.2s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=500&h=300&fit=crop" alt="Costillas BBQ" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Costillas BBQ</h3>
+                        <p class="item-description">Costillas de cerdo tiernas con salsa barbacoa casera, acompañadas de papas rústicas (800gr)</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 42.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.3s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&h=300&fit=crop" alt="Lomo de Res Grill" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Lomo de Res Grill</h3>
+                        <p class="item-description">Corte premium a la parrilla con papas rústicas y chimichurri de la casa</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 48.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.4s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1532636875304-0c89119d9b4d?w=500&h=300&fit=crop" alt="Pollo a la Brasa" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Pollo a la Brasa</h3>
+                        <p class="item-description">Pollo entero marinado con hierbas campestres, servido con papas fritas y ensalada</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 35.00</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-    <section class="section">
-      <div class="section-content">
-        <div class="section-title pizzas">Pizzas Artesanales</div>
-        <div class="menu-item">
-          <span class="menu-item-name">Pizza Quattro Formaggi</span>
-          <span class="menu-item-price">$320.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Margherita Premium</span>
-          <span class="menu-item-price">$280.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Pepperoni Suprema</span>
-          <span class="menu-item-price">$350.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Veggie Deluxe</span>
-          <span class="menu-item-price">$310.00</span>
-        </div>
-      </div>
-      <div class="section-image">
-        <img src="https://res.cloudinary.com/dfwansnah/image/upload/v1747951212/pizzas_wbi5cc.jpg" alt="Pizzas Artesanales">
-      </div>
-    </section>
+        <!-- SECCIÓN TRUCHAS -->
+        <section class="category-section" id="truchas">
+            <h2 class="section-title">🐟 Platos de Trucha</h2>
+            <div class="menu-grid">
+                <article class="menu-item" style="animation-delay: 0.1s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&h=300&fit=crop" alt="Trucha a la Parrilla" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Trucha a la Parrilla</h3>
+                        <p class="item-description">Trucha fresca a la parrilla, acompañada de patacones crujientes y ensalada mixta</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 35.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.2s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=300&fit=crop" alt="Trucha Frita" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Trucha Frita</h3>
+                        <p class="item-description">Trucha dorada frita en aceite de oliva, servida con yuca sancochada y salsa tártara</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 32.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.3s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=500&h=300&fit=crop" alt="Trucha al Ajillo" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Trucha al Ajillo</h3>
+                        <p class="item-description">Trucha en deliciosa salsa de ajo y hierbas aromáticas, acompañada de arroz verde</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 38.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.4s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500&h=300&fit=crop" alt="Ceviche de Trucha" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Ceviche de Trucha</h3>
+                        <p class="item-description">Trucha fresca marinada en limón con cebolla morada, ají limo y camote dulce</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 30.00</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-    <section class="section">
-      <div class="section-content">
-        <div class="section-title aperitivos">Aperitivos Gourmet</div>
-        <div class="menu-item">
-          <span class="menu-item-name">Tabla de Quesos Selectos</span>
-          <span class="menu-item-price">$240.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Croquetas de Jamón Ibérico</span>
-          <span class="menu-item-price">$180.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Bruschetta Mediterránea</span>
-          <span class="menu-item-price">$160.00</span>
-        </div>
-        <div class="menu-item">
-          <span class="menu-item-name">Alitas Buffalo Picantes</span>
-          <span class="menu-item-price">$220.00</span>
-        </div>
-      </div>
-      <div class="section-image">
-        <img src="https://res.cloudinary.com/dfwansnah/image/upload/v1747951212/aperitivos_yarxyr.jpg" alt="Aperitivos Gourmet">
-      </div>
-    </section>
-  </div>
+        <!-- SECCIÓN ESPECIALIDADES -->
+        <section class="category-section" id="especialidades">
+            <h2 class="section-title">🍽️ Especialidades de la Casa</h2>
+            <div class="menu-grid">
+                <article class="menu-item" style="animation-delay: 0.1s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&h=300&fit=crop" alt="Arroz Chaufa Especial" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Arroz Chaufa Especial</h3>
+                        <p class="item-description">Arroz salteado al wok con pollo, cerdo y mariscos, al estilo oriental peruano</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 30.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.2s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&h=300&fit=crop" alt="Lomo Saltado" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Lomo Saltado</h3>
+                        <p class="item-description">Clásico lomo saltado peruano con papas fritas doradas y arroz blanco</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 28.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.3s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=500&h=300&fit=crop" alt="Tallarín Saltado" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Tallarín Saltado</h3>
+                        <p class="item-description">Fideos salteados al wok con carne de res y vegetales frescos</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 27.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.4s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&h=300&fit=crop" alt="Aeropuerto Especial" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Aeropuerto Especial</h3>
+                        <p class="item-description">Combinación perfecta de arroz chaufa y tallarín saltado en un solo plato</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 32.00</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- SECCIÓN TÍPICOS -->
+        <section class="category-section" id="tipicos">
+            <h2 class="section-title">🌿 Platos Típicos</h2>
+            <div class="menu-grid">
+                <article class="menu-item" style="animation-delay: 0.1s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&h=300&fit=crop" alt="Pachamanca" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Pachamanca Campestre</h3>
+                        <p class="item-description">Carnes y tubérculos cocidos bajo tierra con piedras calientes, tradición andina</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 45.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.2s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&h=300&fit=crop" alt="Cuy Chactado" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Cuy Chactado</h3>
+                        <p class="item-description">Cuy frito servido con papas doradas, maíz tostado y ají de huacatay</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 55.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.3s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&h=300&fit=crop" alt="Rocoto Relleno" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Rocoto Relleno</h3>
+                        <p class="item-description">Rocoto relleno de carne molida y especias, gratinado con queso fresco</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 25.00</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="menu-item" style="animation-delay: 0.4s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&h=300&fit=crop" alt="Lechón al Horno" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Lechón al Horno</h3>
+                        <p class="item-description">Cerdo al horno con guarnición de yuca frita y ensalada de la casa</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 60.00</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <!-- SECCIÓN BEBIDAS -->
+        <section class="category-section" id="bebidas">
+            <h2 class="section-title">🍹 Bebidas Refrescantes</h2>
+            <div class="menu-grid">
+                <article class="menu-item" style="animation-delay: 0.1s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=500&h=300&fit=crop" alt="Chicha Morada" loading="lazy">
+                        <div class="item-overlay"></div>        
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Chicha Morada</h3>
+                        <p class="item-description">Bebida refrescante a base de maíz morado, piña y especias</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 8.00</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="menu-item" style="animation-delay: 0.2s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=500&h=300&fit=crop" alt="Inca Kola" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Inca Kola</h3>
+                        <p class="item-description">Refresco peruano de sabor único, ideal para acompañar tus platos</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 6.00</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="menu-item" style="animation-delay: 0.3s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=500&h=300&fit=crop" alt="Agua de Coco" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Agua de Coco</h3>
+                        <p class="item-description">Refrescante agua de coco natural, ideal para el calor</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 10.00</span>
+                        </div>
+                    </div>
+                </article>
+            <div>
+        </section>
+        <!-- SECCIÓN POSTRES -->
+        <section class="category-section" id="postres">
+            <h2 class="section-title">🍰 Postres Caseros</h2>
+            <div class="menu-grid">
+                <article class="menu-item" style="animation-delay: 0.1s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=500&h=300&fit=crop" alt="Torta de Tres Leches" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Torta de Tres Leches</h3>
+                        <p class="item-description">Deliciosa torta empapada en tres tipos de leche, con crema batida</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 12.00</span>
+                        </div>
+                    </div>
+                </article>  
+                <article class="menu-item" style="animation-delay: 0.2s">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=500&h=300&fit=crop" alt="Helado Artesanal" loading="lazy">
+                        <div class="item-overlay"></div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="menu-item-name">Helado Artesanal</h3>
+                        <p class="item-description">Helado de frutas naturales, hecho en casa, ideal para el calor</p>
+                        <div class="item-footer">
+                            <span class="menu-item-price">S/ 10.00</span>
+                        </div>
+                    <div>
+                </article>
+            <div>
+        </section>
+    </main>
+    <button class="scroll-top" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="script.js"></script>
 </body>
 </html>
+
